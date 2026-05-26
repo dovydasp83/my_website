@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import sqlite3
 
 app = Flask(__name__)
 
@@ -17,11 +18,16 @@ def contact():
         email = request.form["email"]
         message = request.form["message"]
 
-        with open("messages.txt", "a") as file:
-            file.write(f"Name: {name}\n")
-            file.write(f"Email: {email}\n")
-            file.write(f"Message: {message}\n")
-            file.write("-" * 40 + "\n")
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)",
+            (name, email, message)
+        )
+
+        conn.commit()
+        conn.close()
 
         return render_template(
             "contact.html",
@@ -30,6 +36,36 @@ def contact():
         )
 
     return render_template("contact.html", success=False)
+
+@app.route("/messages")
+def messages():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM messages")
+    messages = cursor.fetchall()
+
+    conn.close()
+
+    return render_template("messages.html", messages=messages)
+
+def init_db():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT,
+        message TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_db()
 
 if __name__ == '__main__':
     app.run(debug=True)
