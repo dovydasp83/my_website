@@ -17,12 +17,17 @@ def contact():
         email = request.form["email"]
         message = request.form["message"]
 
+        with open("messages.txt", "a") as file:
+            file.write(f"Name: {name}\n")
+            file.write(f"Email: {email}\n")
+            file.write(f"Message: {message}\n")
+            file.write("-" * 40 + "\n")
+
         return render_template(
             "contact.html",
-            success = True,
-            name = name
+            success=True,
+            name=name
         )
-    return render_template("contact.html", success=False)
 
 if __name__ == '__main__':
     app.run(debug=True)
