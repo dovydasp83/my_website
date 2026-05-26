@@ -10,10 +10,16 @@ body {
 h1 {
     color: #e7e7e7;
     font-size: 48px;
+    text-align: center;
+}
+
+p {
+    text-align: center;
 }
 
 h2 {
     color: #e7e7e7;
+
 }
 
 a {
@@ -32,6 +38,12 @@ a:hover {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
 }
 
 nav {
