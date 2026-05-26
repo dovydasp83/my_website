@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+    </nav>
+
+    <h1>Contact Me</h1>
+
+    {% if success %}
+        <p>Thanks, {{ name }}. Your message was submitted.</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="text" name="name" placeholder="Your name" required>
+
+        <input type="email" name="email" placeholder="Your email" required>
+
+        <textarea name="message" placeholder="Your message" required></textarea>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
